@@ -19,7 +19,8 @@ client = Client("opc.tcp://141.58.122.40:4841")
 def handle_request(req):
     try:
         #connect to client
-        client.connect()        
+        if (req.option == 'addPackage' or req.option == 'addCPS' or req.option == 'remCPS'):
+            client.connect()        
     except:
         return OPCMenuResponse("Error could not connect to server.", "-201x000")
     
@@ -264,7 +265,8 @@ def handle_request(req):
         responseAnswer = "Option currently is not supported"    
     
     # disconnect from client
-    client.disconnect()
+    if (req.option == 'remPackage' or req.option == 'addCPS' or req.option == 'remCPS'):
+        client.disconnect()
     # Send ROS Response
     return OPCMenuResponse(responseAnswer, responseValue)
 
